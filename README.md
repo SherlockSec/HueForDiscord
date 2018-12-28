@@ -1,2 +1,6 @@
 # DiscordHue
-A Discord Bot toi control Phillips Hue lights
+A Discord Bot to control Phillips Hue lights
+
+## Requirements
+ * node-hue-api
+ * discord.js
