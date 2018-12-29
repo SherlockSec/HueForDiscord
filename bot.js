@@ -1,6 +1,9 @@
 //Discord.JS
 const Discord = require("discord.js");
 const client = new Discord.Client();
+const fs = require("fs");
+var config = JSON.parse(fs.readFileSync("./config.json"));
+
 
 //Node-Hue-API
 var hue = require("node-hue-api"),
@@ -31,12 +34,12 @@ var fullColorHex = function(r,g,b) {
 };
 
 //Declarations
-var host = "BRIDGE IP GOES HERE",
-	username = "BRIDGE USERNAME GOES HERE",
+var host = config.host,
+	username = config.username,
 	api = new HueApi(host, username),
 	state = lightState.create(),
-	prefix = "~",
-	lightNum = "LIGHT NUMBER GOES HERE";
+	prefix = config.prefix,
+	lightNum = config.lightNum;
 
 //Bot code
 client.on("ready", () => {
@@ -76,8 +79,13 @@ client.on("message", message => {
 				.setDescription(`Red Value: ${r}. Green Value: ${g}. Blue Value: ${b}`);
 			message.channel.send(embed);
 			break;
+		case "light.switch" :
+			let num = args[0];
+			lightNum = num;
+			//fs.writeFile("./config.json", JSON.stringify(config))
+			message.channel.send(`Light Number switched to ${lightNum}`);
 	}
 });
 
 //Use your own token - Bot login
-client.login('TOKEN GOES HERE')
+client.login(config.token)
